@@ -1,6 +1,8 @@
 package com.srs.myshop.ui.activities
 
 import android.app.Dialog
+import android.os.Handler
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.google.android.material.snackbar.Snackbar
@@ -18,6 +20,8 @@ import com.srs.myshop.utils.MSPTextView
 open class BaseActivity : AppCompatActivity() {
     private lateinit var mProgressDialog: Dialog
     private lateinit var tv_progress_text:MSPTextView
+    // A global variable for double back press feature.
+    private var doubleBackToExitPressedOnce = false
     // TODO Step 4: Create a function to show the success and error messages in snack bar component.
     // START
     /**
@@ -76,6 +80,27 @@ open class BaseActivity : AppCompatActivity() {
     fun hideProgressDialog() {
         mProgressDialog.dismiss()
     }
-    // END
+
+    /**
+     * A function to implement the double back press feature to exit the app.
+     */
+    fun doubleBackToExit() {
+
+        if (doubleBackToExitPressedOnce) {
+            super.onBackPressed()
+            return
+        }
+
+        this.doubleBackToExitPressedOnce = true
+
+        Toast.makeText(
+            this,
+            resources.getString(R.string.please_click_back_again_to_exit),
+            Toast.LENGTH_SHORT
+        ).show()
+
+        @Suppress("DEPRECATION")
+        Handler().postDelayed({ doubleBackToExitPressedOnce = false }, 2000)
+    }
 }
 // END
