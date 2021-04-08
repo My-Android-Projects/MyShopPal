@@ -8,16 +8,13 @@ import android.text.TextUtils
 import android.util.Log
 import android.view.WindowManager
 import com.srs.myshop.R
-import com.srs.myshop.utils.MSPButton
-import com.srs.myshop.utils.MSPTextViewBold
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.srs.myshop.firestore.FirestoreClass
 import com.srs.myshop.models.User
-import com.srs.myshop.utils.MSPEditText
-import com.srs.myshop.utils.MSPTextView
+import com.srs.myshop.utils.*
 
 @Suppress("DEPRECATION")
 class LoginActivity : BaseActivity() {
@@ -53,8 +50,7 @@ class LoginActivity : BaseActivity() {
         et_password=findViewById(R.id.et_password)
         tv_register.setOnClickListener {
 
-            // Launch the register screen when the user clicks on the text.
-           // validateRegisterDetails()
+
             val intent = Intent(this@LoginActivity, RegisterActivity::class.java)
             startActivity(intent)
 
@@ -74,11 +70,6 @@ class LoginActivity : BaseActivity() {
     }
 
 
-    // TODO Step 6: Create an function to validate the register account fields.
-    // START
-    /**
-     * A function to validate the entries of a new user.
-     */
     private fun validateLoginDetails(): Boolean {
         return when {
             TextUtils.isEmpty(et_email.text.toString().trim { it <= ' ' }) -> {
@@ -142,10 +133,13 @@ class LoginActivity : BaseActivity() {
         Log.i("Email: ", user.email)
 
         // Redirect the user to Main Screen after log in.
-        val intent=Intent(this@LoginActivity, MainActivity::class.java)
-        intent.flags=Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-
-        startActivity(intent)
+       if(user.profileCompleted==0) {
+           var intent = Intent(this@LoginActivity, UserProfileActivity::class.java)
+           intent.putExtra(Constants.EXTRA_USER_DETAILS,user)
+           startActivity(intent)
+       }
+       else
+        startActivity(Intent(this@LoginActivity, MainActivity::class.java))
         finish()
     }
     // END

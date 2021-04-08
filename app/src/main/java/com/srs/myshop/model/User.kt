@@ -1,14 +1,10 @@
 package com.srs.myshop.models
 
-//TODO Step 1: Create a data model class for User with the required fields.
-// Here we have added all the fields of User which is present in the registration screen and which will be used later on.
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
 
-// START
-/**
- * A data model class for User with required fields.
- */
-// START
-data class User(
+@Parcelize
+  class User(
     val id: String = "",
     val firstName: String = "",
     val lastName: String = "",
@@ -16,5 +12,5 @@ data class User(
     val image: String = "",
     val mobile: Long = 0,
     val gender: String = "",
-    val profileCompleted: Int = 0)
+    val profileCompleted: Int = 0): Parcelable
 // END
